@@ -4,27 +4,37 @@ struct Index {
   @State message: string = 'Hello World';
 
   build() {
-    RelativeContainer() {
+    Stack() {
+      // 背景图片
       Image($rawfile('gui/111.jpg'))
         .width('100%')
         .height('100%')
         .objectFit(ImageFit.Cover)
-        .position({ x: 0, y: 0 })
-        .zIndex(0)
-      Text(this.message)
-        .id('HelloWorld')
-        .fontSize($r('app.float.page_text_font_size'))
-        .fontWeight(FontWeight.Bold)
-        .alignRules({
-          center: { anchor: '__container__', align: VerticalAlign.Center },
-          middle: { anchor: '__container__', align: HorizontalAlign.Center }
-        })
-        .onClick(() => {
-          this.message = 'Welcome';
-        })
-        .zIndex(1)
+
+      // 居中内容
+      Column() {
+        Text(this.message)
+          .id('HelloWorld')
+          .fontSize($r('app.float.page_text_font_size'))
+          .fontWeight(FontWeight.Bold)
+          .onClick(() => {
+            this.message = 'Welcome';
+          })
+          .margin({ bottom: 32 })
+        Button('开始游戏')
+          .width(200)
+          .height(60)
+          .fontSize(24)
+          .onClick(() => {
+            // TODO: 在这里添加开始游戏的逻辑
+          })
+      }
+      .alignItems(HorizontalAlign.Center)
+      .justifyContent(FlexAlign.Center)
+      .width('100%')
+      .height('100%')
     }
-    .height('100%')
     .width('100%')
+    .height('100%')
   }
 }
