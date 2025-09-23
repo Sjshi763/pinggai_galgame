@@ -31,9 +31,9 @@ struct CharacterDialog {
       Row() {
         if (this.image !== '') {
           Image($rawfile(this.image))
-            .width(80)
-            .height(80)
-            .borderRadius(40)
+            .width(160)
+            .height(160)
+            .borderRadius(80)
             .margin({ right: 16 })
         }
         Column() {
@@ -67,9 +67,9 @@ struct CharacterDialog {
             }
             
             Image($rawfile(this.image))
-              .width(100)
-              .height(100)
-              .borderRadius(50)
+              .width(200)
+              .height(200)
+              .borderRadius(100)
             
             if (this.imagePosition === 'center') {
               Blank()
