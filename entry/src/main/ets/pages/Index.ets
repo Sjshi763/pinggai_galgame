@@ -1,3 +1,5 @@
+import router from '@ohos.router';
+
 @Entry
 @Component
 struct Index {
@@ -26,7 +28,8 @@ struct Index {
           .height(60)
           .fontSize(24)
           .onClick(() => {
-            // TODO: 在这里添加开始游戏的逻辑
+            // 跳转到Galgame页面
+            router.pushUrl({ url: 'pages/GalgamePage' });
           })
       }
       .alignItems(HorizontalAlign.Center)

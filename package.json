@@ -1,0 +1,13 @@
+{
+  "name": "pinggai-galgame",
+  "version": "1.0.0",
+  "description": "Galgame project",
+  "scripts": {
+    "build": "cd entry && hvigor build",
+    "dev": "cd entry && hvigor build -w",
+    "clean": "cd entry && hvigor clean"
+  },
+  "devDependencies": {
+    "@ohos/hvigor-ohos-plugin": "5.1.0"
+  }
+}
