@@ -3,7 +3,7 @@ import router from '@ohos.router';
 @Entry
 @Component
 struct Index {
-  @State message: string = 'Hello World';
+  @State message: string = '弗雷尔卓德galgame';
 
   build() {
     Stack() {
