@@ -53,6 +53,14 @@ struct CharacterDialog {
     } else {
       // ADV模式对话框
       Column() {
+        if (this.image !== '') {
+          Image($rawfile(this.image))
+            .width(100)
+            .height(100)
+            .borderRadius(50)
+            .alignSelf(ItemAlign.Start)
+            .margin({ bottom: 16 })
+        }
         if (this.name !== '') {
           Text(this.name)
             .fontSize(24)
