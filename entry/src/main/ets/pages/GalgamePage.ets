@@ -127,6 +127,8 @@ struct GalgamePage {
   private dialogues: DialogueItem[] = [
     { role: this.role1, text: '我不太明白为什么这种答辩半成品都有人要()' },
     { role: this.role1, text: '既然如此，求求关注b站憂鬱生鱼片喵！关注b站憂鬱生鱼片谢谢喵！！（憂鬱是忧郁的繁体）' },
+    { role: this.role1, text: 'b站小giao移植鸿蒙' },
+    { bgm: 'rawfile/audio/audio1.mp3' },
     { narrator: true, text: '弗雷尔卓德的冬夜常是如此' },
     { narrator: true, text: '天空像是块被搓灰的毛玻璃' },
     { narrator: true, text: '钝刀子般的寒风呼啸不停，吹得我脸生疼' },
@@ -141,6 +143,7 @@ struct GalgamePage {
     { narrator: true, text: '我向老吕使了个眼色，我们加快了脚步' },
     // 背景切换到bg2
     { background: 'rawfile/images/bg2.jpg' },
+    { bgm: 'audio/audio2.mp3' },
     { role: this.role2, text: '里面请，哥', image: 'rawfile/images/微信图片_20250904202715_366_18.png', imagePosition: 'center' },
     { narrator: true, text: '来点什么？', image: 'rawfile/images/微信图片_20250904202715_366_18.png', imagePosition: 'center' },
     { role: this.role3, text: '我看看菜单哈', image: 'rawfile/images/微信图片_20250904202715_366_18.png', imagePosition: 'center' },
@@ -159,7 +162,8 @@ struct GalgamePage {
     { narrator: true, text: '那位大哥身着朴素，看起来和我年龄相仿', image: 'rawfile/images/微信图片_20250904202710_363_18.png', imagePosition: 'center' },
     { narrator: true, text: '过了一阵子，我们的菜上来了' },
     { role: this.role3, text: '老吕啊，今天咱俩必须好好喝点！', image: 'rawfile/images/微信图片_20250904202710_363_18.png', imagePosition: 'center' },
-    { sound: 'audio/yeah.mp3' },
+    { sound: 'rawfile/audio/yeah.mp3' },
+    { bgm: 'rawfile/audio/audio3.mp3' },
     { narrator: true, text: '我拿起瓶起子，十分潇洒地起了瓶盖' },
     { narrator: true, text: '准备倒酒时，发现瓶盖不知去向了' },
     { narrator: true, text: '算了，这个不重要' },
@@ -213,6 +217,7 @@ struct GalgamePage {
     { role: this.role3, text: '那是谁买的？？', image: 'rawfile/images/微信图片_20250904202715_366_18.png', imagePosition: 'center' },
     { role: this.role2, text: '后面那桌给你结的', image: 'rawfile/images/微信图片_20250904202715_366_18.png', imagePosition: 'center' },
     { role: this.role3, text: '哎我，你说这扯不扯', image: 'rawfile/images/微信图片_20250904202715_366_18.png', imagePosition: 'center' },
+    { stopBgm: true },
     { narrator: true, text: '我匆忙向外跑，只为寻到他的身影' },
     // 背景切换
     { background: 'rawfile/images/bg3.png' },
