@@ -143,7 +143,7 @@ struct GalgamePage {
     { narrator: true, text: '我向老吕使了个眼色，我们加快了脚步' },
     // 背景切换到bg2
     { background: 'rawfile/images/bg2.jpg' },
-    { bgm: 'audio/audio2.mp3' },
+    { bgm: 'rawfile/audio/audio2.mp3' },
     { role: this.role2, text: '里面请，哥', image: 'rawfile/images/微信图片_20250904202715_366_18.png', imagePosition: 'center' },
     { narrator: true, text: '来点什么？', image: 'rawfile/images/微信图片_20250904202715_366_18.png', imagePosition: 'center' },
     { role: this.role3, text: '我看看菜单哈', image: 'rawfile/images/微信图片_20250904202715_366_18.png', imagePosition: 'center' },
