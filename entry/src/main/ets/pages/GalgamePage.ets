@@ -1,6 +1,7 @@
 import router from '@ohos.router';
 import resourceManager from '@ohos.resourceManager';
 import util from '@ohos.util';
+import media from '@ohos.multimedia.media';
 
 // 定义角色接口
 interface Character {
@@ -135,9 +136,20 @@ struct GalgamePage {
   @State currentStep: number = 0;
   @State gameEnded: boolean = false;
 
+  // 音频播放器
+  private bgmPlayer: media.AVPlayer | null = null;
+  private soundPlayer: media.AVPlayer | null = null;
+  private currentBgm: string = '';
+
   aboutToAppear() {
     // 初始化游戏 - 加载JSON数据
     this.loadGameData();
+    this.initAudioPlayers();
+  }
+
+  aboutToDisappear() {
+    // 释放音频资源
+    this.releaseAudioPlayers();
   }
   
   async loadGameData() {
@@ -172,6 +184,119 @@ struct GalgamePage {
     }
   }
 
+  // 初始化音频播放器
+  async initAudioPlayers() {
+    try {
+      this.bgmPlayer = await media.createAVPlayer();
+      this.soundPlayer = await media.createAVPlayer();
+      console.info('Audio players initialized');
+    } catch (error) {
+      console.error('Failed to initialize audio players:', error);
+    }
+  }
+
+  // 播放背景音乐
+  async playBgm(bgmPath: string) {
+    if (!this.bgmPlayer) {
+      return;
+    }
+
+    try {
+      // 如果是同一首BGM，不重新播放
+      if (this.currentBgm === bgmPath) {
+        return;
+      }
+
+      // 停止当前BGM
+      await this.stopBgm();
+
+      // 获取资源管理器
+      const context = getContext(this);
+      const resMgr = context.resourceManager;
+
+      // 读取音频文件
+      const fileData = await resMgr.getRawFileContent(bgmPath);
+
+      // 将Uint8Array转换为base64字符串
+      const base64Helper = new util.Base64Helper();
+      const base64Str = base64Helper.encodeToStringSync(fileData);
+
+      // 设置数据源
+      this.bgmPlayer.url = `data:audio/mp3;base64,${base64Str}`;
+
+      // 设置循环播放
+      this.bgmPlayer.loop = true;
+
+      // 开始播放
+      await this.bgmPlayer.play();
+
+      this.currentBgm = bgmPath;
+      console.info(`Playing BGM: ${bgmPath}`);
+    } catch (error) {
+      console.error(`Failed to play BGM ${bgmPath}:`, error);
+    }
+  }
+
+  // 播放音效
+  async playSound(soundPath: string) {
+    if (!this.soundPlayer) {
+      return;
+    }
+
+    try {
+      // 获取资源管理器
+      const context = getContext(this);
+      const resMgr = context.resourceManager;
+
+      // 读取音频文件
+      const fileData = await resMgr.getRawFileContent(soundPath);
+
+      // 将Uint8Array转换为base64字符串
+      const base64Helper = new util.Base64Helper();
+      const base64Str = base64Helper.encodeToStringSync(fileData);
+
+      // 设置数据源
+      this.soundPlayer.url = `data:audio/mp3;base64,${base64Str}`;
+
+      // 开始播放
+      await this.soundPlayer.play();
+
+      console.info(`Playing sound: ${soundPath}`);
+    } catch (error) {
+      console.error(`Failed to play sound ${soundPath}:`, error);
+    }
+  }
+
+  // 停止背景音乐
+  async stopBgm() {
+    if (this.bgmPlayer && this.currentBgm) {
+      try {
+        await this.bgmPlayer.stop();
+        this.currentBgm = '';
+        console.info('BGM stopped');
+      } catch (error) {
+        console.error('Failed to stop BGM:', error);
+      }
+    }
+  }
+
+  // 释放音频资源
+  async releaseAudioPlayers() {
+    try {
+      if (this.bgmPlayer) {
+        await this.bgmPlayer.release();
+        this.bgmPlayer = null;
+      }
+      if (this.soundPlayer) {
+        await this.soundPlayer.release();
+        this.soundPlayer = null;
+      }
+      console.info('Audio players released');
+    } catch (error) {
+      console.error('Failed to release audio players:', error);
+    }
+  }
+
   playNextDialogue() {
     if (!this.dataLoaded || this.currentStep >= this.gameData.dialogues.length) {
       this.gameEnded = true;
@@ -180,12 +305,27 @@ struct GalgamePage {
     }
 
     const dialogue = this.gameData.dialogues[this.currentStep];
-    
+
     // 处理背景切换
     if (dialogue.background) {
       this.currentBackground = dialogue.background;
     }
-    
+
+    // 处理背景音乐
+    if (dialogue.bgm) {
+      this.playBgm(dialogue.bgm);
+    }
+
+    // 处理音效
+    if (dialogue.sound) {
+      this.playSound(dialogue.sound);
+    }
+
+    // 处理停止背景音乐
+    if (dialogue.stopBgm) {
+      this.stopBgm();
+    }
+
     // 处理角色对话
     if (dialogue.roleId) {
       const character = this.characterMap.get(dialogue.roleId);
@@ -197,7 +337,7 @@ struct GalgamePage {
       this.currentPosition = dialogue.imagePosition || 'left';
       this.isNvlMode = false;
     }
-    
+
     // 处理叙述者
     if (dialogue.narrator) {
       this.currentName = '';
@@ -206,7 +346,7 @@ struct GalgamePage {
       this.currentPosition = dialogue.imagePosition || 'left';
       this.isNvlMode = false;
     }
-    
+
     this.currentStep++;
   }
 
@@ -215,7 +355,7 @@ struct GalgamePage {
       this.playNextDialogue();
     } else {
       // 游戏结束，返回主菜单
-      router.pushUrl({ url: 'pages/Index' });
+      router.replaceUrl({ url: 'pages/Index' });
     }
   }
 
